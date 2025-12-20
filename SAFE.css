@@ -1,0 +1,165 @@
+/* Hide the default file input */
+#imgInput {
+  display: none;
+}
+
+/* Styled label acting as the button */
+.custom-file-label {
+  display: inline-block;
+  padding: 14px 20px;
+  margin-top: 14px;
+  background-color: #2563eb;
+  color: white;
+  font-size: 1.2rem;
+  border-radius: 12px;
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  width: 100%;
+  border: none;
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.5);
+  transition: background-color 0.25s ease, box-shadow 0.3s ease;
+}
+
+.custom-file-label:hover,
+.custom-file-label:focus {
+  background-color: #1e40af;
+  box-shadow: 0 6px 14px rgba(30, 64, 175, 0.75);
+  outline: none;
+}
+
+.custom-file-label:focus {
+  outline: 2px solid #1e40af;
+  outline-offset: 3px;
+}
+.custom-file-label:active {
+  background-color: #1e3a8a;
+  box-shadow: 0 2px 6px rgba(30, 58, 138, 0.6);
+}
+/* Hide original file input */
+#imgInput {
+  display: none;
+}
+/* Custom styled label as button */
+.custom-file-label {
+  display: block;
+  margin-top: 14px;
+  background-color: #2563eb;
+  color: white;
+  font-size: 1.2rem;
+  text-align: center;
+  border-radius: 12px;
+  padding: 16px 0;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.5);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+.custom-file-label:hover,
+.custom-file-label:focus {
+  background-color: #1e40af;
+  box-shadow: 0 6px 14px rgba(30, 64, 175, 0.75);
+  outline: none;
+}
+.custom-file-label:focus {
+  outline: 2px solid #1e40af;
+  outline-offset: 3px;
+}
+/* ===============================
+   IMPRESSIVE OCR / AI LOADER
+================================ */
+
+.smart-loader {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.smart-loader.hidden {
+  display: none;
+}
+
+.loader-glass {
+  background: linear-gradient(145deg, #1e293b, #0f172a);
+  border-radius: 20px;
+  padding: 30px;
+  width: 92%;
+  max-width: 380px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  text-align: center;
+}
+
+/* AI Ring */
+.ai-ring {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  border: 4px solid rgba(56,189,248,0.2);
+  border-top-color: #38bdf8;
+  animation: spin 1s linear infinite;
+}
+
+/* Scan lines animation */
+.scan-lines {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin: 12px 0;
+}
+
+.scan-lines span {
+  width: 6px;
+  height: 18px;
+  background: #38bdf8;
+  border-radius: 3px;
+  animation: pulse 1.2s infinite ease-in-out;
+}
+
+.scan-lines span:nth-child(2) { animation-delay: 0.15s; }
+.scan-lines span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes pulse {
+  0%,100% { opacity: 0.3; transform: scaleY(0.6); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Loader text */
+.loader-text h3 {
+  margin: 8px 0 4px;
+  color: #e0f2fe;
+  font-size: 1.25rem;
+}
+
+.loader-text p {
+  font-size: 0.95rem;
+  color: #94a3b8;
+}
+
+/* Progress bar */
+.progress-track {
+  width: 100%;
+  height: 10px;
+  background: #334155;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 14px;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #38bdf8, #22d3ee);
+  transition: width 0.4s ease;
+}
+/* ===============================
+   END OF LOADER STYLES
