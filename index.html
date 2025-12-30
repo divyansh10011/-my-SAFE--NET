@@ -1,479 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>SAFE-NET CYBER SCAM PREVENTION SYSTEM</title>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.12.0"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAFE-NET Cyber Scam Prevention System</title>
 
+<link rel="stylesheet" href="prac.css">
 
-<!-- OCR Library -->
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.1.1/dist/tesseract.min.js"></script>
-<!-- TensorFlow.js Library (Keep for potential future use) -->
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.6.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.6.0"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
-<script>
-Tesseract.setLogging(false);
-</script>
-<script>
-let phishingModel = null;
-
-async function loadNLM() {
-  try {
-    phishingModel = await tf.loadLayersModel("model/nlm/model.json");
-    console.log("NLM loaded successfully.");
-  } catch (err) {
-    console.error("Failed to load NLM:", err);
-    phishingModel = null;
-  }
-}
-
-loadNLM();
-</script>
-
-
-
-<style>
-body {
-  margin: 0;
-  background: #1c2536;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #e0e6f1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-  padding: 40px 20px;
-}
-h2 {
-  font-size: 2.3rem;
-  color: #70c8f5;
-  text-shadow: 0 0 8px #53a7e2;
-  margin-bottom: 1rem;
-}
-.container {
-  background: #2a344d;
-  width: 100%;
-  max-width: 720px;
-  border-radius: 16px;
-  padding: 30px;
-  box-shadow: 0 12px 25px rgba(0,0,0,0.5);
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-}
-textarea {
-  width: 100%;
-  min-height: 160px;    
-  background: #1f293a;
-  color: #c7d2fe;
-  border-radius: 12px;
-  padding: 14px;
-  font-size: 1rem;
-  border: none;
-  resize: vertical;
-  font-family: monospace;
-  margin-bottom: 14px;
-}
-input[type="file"] {
-  display: none;
-}
-.custom-file-label, .action-button {
-  display: inline-block;
-  padding: 14px 20px;
-  background-color: #2563eb;
-  color: white;
-  font-size: 1.2rem;
-  border-radius: 12px;
-  cursor: pointer;
-  user-select: none;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.5);
-  transition: background-color 0.25s ease, box-shadow 0.3s ease;
-  border: none;
-  margin-top: 10px;
-}
-.custom-file-label:hover, .action-button:hover {
-  background-color: #1e40af;
-}
-.button-group {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
-.button-group .action-button {
-  flex-grow: 1;
-  width: auto;
-}
-#status {
-  margin-top: 20px;
-  padding: 20px;
-  border-radius: 14px;
-  font-weight: bold;
-  font-size: 1.3rem;
-  text-align: center;
-  display: block;
-  white-space: pre-line;
-}
-#output {
-  margin-top: 15px;
-  padding: 15px;
-  background: #1f293a;
-  border-radius: 12px;
-  white-space: pre-wrap;
-  font-family: monospace;
-  font-size: 0.9rem;
-  color: #c7d2fe;
-  border: 1px solid #374151;
-}
-
-/* Status colors */
-.safe { background: #d1fae5; color: #065f46; }
-.warn { background: #fff3c7; color: #92400e; }
-.danger { background: #fee2e2; color: #991b1b; }
-.unknown { background: #c7d2fe; color: #111; }
-</style>
 </head>
+
 <body>
 
-<div class="container">
-  <h2>🛡 SafeNet — CYBER SCAM PREVENTION SYSTEM</h2>
-  
-  <textarea id="input" placeholder="Paste Your Message, Email, URL, or Link"></textarea>
-
-  <label style="margin-top:10px;font-size:1.1rem;">🔍 Select Scan Type:</label>
-  <select id="scanType" style="
-    width:100%; padding:10px; margin-bottom:18px;
-    background:#1f293a; color:#c7d2fe;
-    border-radius:10px; border:none; font-size:1rem;">
-    <option value="auto" selected>📌 Auto Detect (Text/Image)</option>
-    <option value="text">✉ Text / Email Only</option>
-    <option value="url">🔗 URL Only</option>
-    <option value="image">🖼 Image Only</option>
-  </select>
-
-  <!-- Upload input section -->
-  <div id="uploadSection">
-    <input type="file" id="fileInput" accept="image/*,.txt,.eml,text/plain" />
-    <label for="fileInput" class="custom-file-label" tabindex="0">📁 Choose File</label>
-    <div class="button-group">
-      <button id="scanBtn" class="action-button">⚡ Scan Now</button>
-      <button id="previewBtn" class="action-button" style="background-color: #4f46e5;">👁 Preview File</button>
+<!-- SMART AI LOADER -->
+<div id="smartLoader" class="smart-loader hidden">
+  <div class="loader-glass">
+    <div class="ai-ring"></div>
+    <div class="scan-lines"><span></span><span></span><span></span></div>
+    <div class="loader-text">
+      <h3 id="loaderMain">Initializing AI</h3>
+      <p id="loaderSub">Booting neural engines…</p>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="smartProgress"></div>
     </div>
   </div>
-
-  <div id="status" aria-live="polite" role="alert">Waiting for input...</div>
-  <pre id="output"></pre>
 </div>
 
-<script>
-// --- Global Variables and Initialization ---
-let model = null;
-let selectedFile = null;
+<!-- PAGE WRAPPER -->
+<main class="page">
 
-const fileInput = document.getElementById('fileInput');
-const scanType = document.getElementById('scanType');
-const statusEl = document.getElementById('status');
-const outputEl = document.getElementById('output');
-const inputEl = document.getElementById('input');
-const scanBtn = document.getElementById('scanBtn');
-const previewBtn = document.getElementById('previewBtn');
-const uploadSection = document.getElementById('uploadSection');
-const fileLabel = document.querySelector('label[for="fileInput"]');
+  <!-- HERO -->
+  <header class="hero">
+    <h1>SAFE-NET</h1>
+    
+  </header>
 
-// Attempt to load the TensorFlow model on page load (for future ML integration)
-window.onload = async () => {
-  try {
-    // Note: 'model/model.json' is a placeholder. A real model file would be needed.
-    // model = await tf.loadLayersModel('model/model.json'); 
-    // console.log("TensorFlow model loaded successfully.");
-  } catch (e) {
-    // console.warn("TensorFlow model failed to load. Falling back to rule-based analysis.", e);
-    model = null;
-  }
-  updateUploadVisibility();
-};
+  <!-- ANALYSIS CARD -->
+  <section class="analysis-card">
 
-// --- Utility Functions ---
+    <div class="card-header">
+      <h2>Threat Analysis Core</h2>
+      
+    </div>
 
-/**
- * Escapes HTML special characters in a string.
- * @param {string} s - The string to escape.
- * @returns {string} The escaped string.
- */
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
-  }[c]));
-}
+    <textarea id="input"
+      placeholder="Paste suspicious message, email, URL, or communication here…"></textarea>
 
-/**
- * Updates the visibility of the file upload section based on the selected scan type.
- */
-function updateUploadVisibility() {
-  const mode = scanType.value;
-  // Only show upload section for 'image' or 'auto' mode
-  uploadSection.style.display = (mode === 'image' || mode === 'auto') ? 'block' : 'none';
-}
+    <div class="actions">
+      <label for="imgInput" class="custom-file-label">
+        Upload Image (OCR)
+      </label>
+      <input type="file" id="imgInput" accept="image/*">
 
-// --- OCR and Preprocessing ---
+      <button id="scanBtn">Initiate AI Scan</button>
+    </div>
 
-/**
- * Preprocesses an image file and performs OCR using Tesseract.js.
- * Includes basic image enhancements (scaling, grayscale, binarization) for better OCR results.
- * @param {File} file - The image file to process.
- * @param {function} progressCallback - Callback for Tesseract progress updates.
- * @returns {Promise<string>} The extracted text.
- */
-async function preprocessAndOCR(file, progressCallback) {
-  statusEl.textContent = 'Status: Loading image...';
-  const img = new Image();
-  const url = URL.createObjectURL(file);
-  img.src = url;
+    <!-- STATUS -->
+    <div class="status-wrap">
+      <div class="status-fill" id="statusFill"></div>
+      <div id="status">AWAITING INPUT</div>
+    </div>
 
-  try {
-    await new Promise((resolve, reject) => {
-      img.onload = resolve;
-      img.onerror = () => reject('Image failed to load.');
-    });
-  } catch (e) {
-    URL.revokeObjectURL(url);
-    return '';
-  }
+    <pre id="output"></pre>
 
-  // Scale up small images for better OCR
-  const minWidth = 1000;
-  const scale = img.width < minWidth ? (minWidth / img.width) : 1;
-  const canvas = document.createElement('canvas');
-  canvas.width = Math.round(img.width * scale);
-  canvas.height = Math.round(img.height * scale);
-  const ctx = canvas.getContext('2d');
-  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  </section>
 
-  // Simple Grayscale + Contrast adjustment
-  let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  let data = imgData.data;
-  for (let i = 0; i < data.length; i += 4) {
-    let gray = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
-    // Increase contrast slightly
-    gray = ((gray - 128) * 1.5) + 128;
-    gray = Math.max(0, Math.min(255, gray));
-    data[i] = data[i + 1] = data[i + 2] = gray;
-  }
-  ctx.putImageData(imgData, 0, 0);
+</main>
 
-  // Binarization (converting to pure black and white)
-  imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  let sum = 0;
-  for (let i = 0; i < imgData.data.length; i += 4) sum += imgData.data[i];
-  // Calculate a dynamic threshold
-  const threshold = Math.max(120, Math.min(200, sum / (imgData.data.length / 4)));
-  for (let i = 0; i < imgData.data.length; i += 4) {
-    const bw = imgData.data[i] > threshold ? 255 : 0;
-    imgData.data[i] = imgData.data[i + 1] = imgData.data[i + 2] = bw;
-  }
-  ctx.putImageData(imgData, 0, 0);
-
-  // Perform OCR
-  const result = await Tesseract.recognize(canvas.toDataURL('image/png'), 'eng', {
-    logger: m => {
-      if (progressCallback) progressCallback(m);
-    }
-  });
-
-  URL.revokeObjectURL(url);
-  return result.data.text.trim();
-}
-
-// --- Scam Analysis Logic ---
-
-const TRIGGERS = [
-  "urgent", "immediately", "verify", "password", "bank", "otp", "transfer", 
-  "limited time", "account locked", "prize", "refund", "invoice", "verify now", 
-  "click here", "suspend", "unauthorized", "security alert", "winnings", "gift card",
-  "bitcoin", "cryptocurrency", "shipping fee", "tax payment", "court summons"
-];
-
-/**
- * Analyzes text content for potential scam indicators.
- * @param {string} text - The text to analyze.
- * @returns {{level: string, msg: string, score: number, findings: string[]}} Analysis result.
- */
-function analyzeText(text) {
-  const lower = text.toLowerCase();
-  let score = 0;
-  const findings = [];
-
-  // 1. URL Detection (High Score)
-  const urls = lower.match(/https?:\/\/[^\s'"]+/g);
-  if (urls) {
-    score += 12;
-    findings.push(`URL(s) detected: ${urls.length}`);
-    // Further check: look for common URL obfuscation/suspicious patterns
-    urls.forEach(url => {
-      if (url.includes('@') || url.includes('bit.ly') || url.includes('tinyurl')) {
-        score += 5;
-        findings.push(`Suspicious URL pattern in: ${url}`);
-      }
-    });
-  }
-
-  // 2. Email Detection (Medium Score)
-  if (lower.match(/[\w.+-]+@[\w.-]+\.\w+/g)) {
-    score += 8;
-    findings.push('Email address detected');
-  }
-
-  // 3. Trigger Word Analysis (Variable Score)
-  TRIGGERS.forEach(w => {
-    if (lower.includes(w)) {
-      score += 5;
-      findings.push(`Trigger: "${w}"`);
-    }
-  });
-
-  // 4. Call to Action (Medium Score)
-  if (lower.includes('reply to this email') || lower.includes('call this number')) {
-    score += 5;
-    findings.push('Strong Call to Action detected');
-  }
-
-  // 5. Urgency/Threat (High Score)
-  if (lower.includes('failure to comply') || lower.includes('will be terminated') || lower.includes('immediate action required')) {
-    score += 10;
-    findings.push('High Urgency/Threat language detected');
-  }
-
-  // Determine threat level
-  let level = 'safe',
-    msg = 'Low Threat — Message looks normal.';
-  if (score >= 35) {
-    level = 'danger';
-    msg = 'HIGH RISK — Likely a scam or phishing attempt.';
-  } else if (score >= 15) {
-    level = 'warn';
-    msg = ' Suspicious — Proceed with caution and verify before acting.';
-  } else if (text.length < 10) {
-    level = 'unknown';
-    msg = ' Not enough content for a reliable analysis.';
-  }
-
-  return {
-    level,
-    msg,
-    score,
-    findings
-  };
-}
-
-// --- Main Scan Function ---
-
-/**
- * Handles the entire scanning process based on input type and content.
- */
-async function runScan() {
-  statusEl.className = '';
-  statusEl.textContent = 'Status: Preparing scan...';
-  outputEl.textContent = '';
-  scanBtn.disabled = true;
-
-  let txt = inputEl.value.trim();
-  const mode = scanType.value;
-
-  // 1. Handle File Input (if applicable)
-  if ((mode === 'image' || mode === 'auto') && selectedFile) {
-    if (selectedFile.type.startsWith('image/')) {
-      // OCR for images
-      const ocr = await preprocessAndOCR(selectedFile, m => {
-        const pct = m.progress !== undefined ? Math.round(m.progress * 100) + '%' : '';
-        statusEl.textContent = `Status: OCR ${m.status || ''} ${pct}`;
-      });
-      txt = (txt + '\n' + ocr).trim();
-    } else if (selectedFile.type === 'text/plain' || selectedFile.name.endsWith('.txt') || selectedFile.name.endsWith('.eml')) {
-      // Read text files directly
-      statusEl.textContent = 'Status: Reading text file...';
-      const fileText = await selectedFile.text();
-      txt = (txt + '\n' + fileText).trim();
-    }
-  }
-
-  // 2. Check for minimum content
-  if (!txt || txt.length < 10) {
-    statusEl.className = 'unknown';
-    statusEl.textContent = 'Status: Not enough readable content for analysis.';
-    scanBtn.disabled = false;
-    return;
-  }
-
-  // 3. Perform Analysis
-  statusEl.textContent = 'Status: Analyzing content...';
-  const result = analyzeText(txt);
-
-  // 4. Display Results
-  statusEl.className = result.level;
-  statusEl.innerHTML = `${result.msg} <br><small>Score: ${result.score}</small>`;
-
-  let outputContent = '';
-  if (result.findings.length > 0) {
-    outputContent += '--- Analysis Findings ---\n' + result.findings.join('\n') + '\n\n';
-  }
-  outputContent += '--- Extracted / Input Text ---\n' + txt;
-  outputEl.textContent = outputContent;
-
-  scanBtn.disabled = false;
-}
-
-// --- Event Listeners ---
-
-// Update file selection status
-fileInput.addEventListener('change', e => {
-  selectedFile = e.target.files[0] || null;
-  fileLabel.textContent = selectedFile ?
-    `✅ File Selected: ${selectedFile.name}` :
-    '📁 Choose File';
-  statusEl.textContent = selectedFile ?
-    `Status: File "${selectedFile.name}" ready for scan.` :
-    'Status: Waiting for input...';
-  outputEl.textContent = '';
-});
-
-// Update upload visibility when scan type changes
-scanType.addEventListener('change', updateUploadVisibility);
-
-// Trigger scan on button click
-scanBtn.addEventListener('click', runScan);
-
-// Trigger scan on text input change (debounced for performance in a real app, but simple for this project)
-inputEl.addEventListener('input', () => {
-    // Clear previous status/output on new input
-    statusEl.className = '';
-    statusEl.textContent = 'Status: Ready to scan...';
-    outputEl.textContent = '';
-});
-
-// Preview button functionality
-previewBtn.addEventListener('click', async () => {
-  if (!selectedFile) return alert('Please select a file first.');
-
-  try {
-    if (selectedFile.type.startsWith('image/')) {
-      const url = URL.createObjectURL(selectedFile);
-      const w = window.open('');
-      w.document.write(`<img src="${url}" style="max-width:100%">`);
-    } else {
-      const text = await selectedFile.text();
-      const w = window.open('');
-      w.document.write(`<pre>${escapeHtml(text)}</pre>`);
-    }
-  } catch (error) {
-    alert('Could not preview file. Error: ' + error.message);
-  }
-});
-</script>
+<script src="script.js"></script>
 </body>
 </html>
+
+
