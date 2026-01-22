@@ -4,476 +4,309 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>SAFE-NET CYBER SCAM PREVENTION SYSTEM</title>
+
+<!-- LIBRARIES -->
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.1.1/dist/tesseract.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.12.0"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
 
-
-<!-- OCR Library -->
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.1.1/dist/tesseract.min.js"></script>
-<!-- TensorFlow.js Library (Keep for potential future use) -->
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.6.0/dist/tf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
-<script>
-Tesseract.setLogging(false);
-</script>
-<script>
-let phishingModel = null;
-
-async function loadNLM() {
-  try {
-    phishingModel = await tf.loadLayersModel("model/nlm/model.json");
-    console.log("NLM loaded successfully.");
-  } catch (err) {
-    console.error("Failed to load NLM:", err);
-    phishingModel = null;
-  }
-}
-
-loadNLM();
-</script>
-
-
-
 <style>
-body {
-  margin: 0;
-  background: #1c2536;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #e0e6f1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-  padding: 40px 20px;
-}
-h2 {
-  font-size: 2.3rem;
-  color: #70c8f5;
-  text-shadow: 0 0 8px #53a7e2;
-  margin-bottom: 1rem;
-}
-.container {
-  background: #2a344d;
-  width: 100%;
-  max-width: 720px;
-  border-radius: 16px;
-  padding: 30px;
-  box-shadow: 0 12px 25px rgba(0,0,0,0.5);
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-}
-textarea {
-  width: 100%;
-  min-height: 160px;    
-  background: #1f293a;
-  color: #c7d2fe;
-  border-radius: 12px;
-  padding: 14px;
-  font-size: 1rem;
-  border: none;
-  resize: vertical;
-  font-family: monospace;
-  margin-bottom: 14px;
-}
-input[type="file"] {
-  display: none;
-}
-.custom-file-label, .action-button {
-  display: inline-block;
-  padding: 14px 20px;
-  background-color: #2563eb;
-  color: white;
-  font-size: 1.2rem;
-  border-radius: 12px;
-  cursor: pointer;
-  user-select: none;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.5);
-  transition: background-color 0.25s ease, box-shadow 0.3s ease;
-  border: none;
-  margin-top: 10px;
-}
-.custom-file-label:hover, .action-button:hover {
-  background-color: #1e40af;
-}
-.button-group {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
-.button-group .action-button {
-  flex-grow: 1;
-  width: auto;
-}
-#status {
-  margin-top: 20px;
-  padding: 20px;
-  border-radius: 14px;
-  font-weight: bold;
-  font-size: 1.3rem;
-  text-align: center;
-  display: block;
-  white-space: pre-line;
-}
-#output {
-  margin-top: 15px;
-  padding: 15px;
-  background: #1f293a;
-  border-radius: 12px;
-  white-space: pre-wrap;
-  font-family: monospace;
-  font-size: 0.9rem;
-  color: #c7d2fe;
-  border: 1px solid #374151;
+  /* ================= PROFESSIONAL TITLE ================= */
+
+/* ================= RESET ================= */
+*{box-sizing:border-box;margin:0;padding:0}
+
+/* ================= BODY ================= */
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:radial-gradient(circle at top,#0f172a,#020617);
+  font-family:Inter,Segoe UI,sans-serif;
+  color:#e5e7eb;
 }
 
-/* Status colors */
-.safe { background: #d1fae5; color: #065f46; }
-.warn { background: #fff3c7; color: #92400e; }
-.danger { background: #fee2e2; color: #991b1b; }
-.unknown { background: #c7d2fe; color: #111; }
+/* ================= CARD ================= */
+.container{
+  width:100%;
+  max-width:820px;
+  padding:40px;
+  border-radius:28px;
+  background:linear-gradient(145deg,#0b1222,#020617);
+  box-shadow:0 40px 120px rgba(0,0,0,.9),
+             inset 0 0 0 1px rgba(148,163,184,.1);
+  position:relative;
+}
+
+/* ================= PROFESSIONAL TITLE ================= */
+.title{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  font-size:2.4rem;
+  margin-bottom:30px;
+  text-align:center;
+}
+
+/* Stable enterprise text */
+.title-text{
+  background:linear-gradient(90deg,#7dd3fc,#a5b4fc);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  font-weight:800;                /* Bold */
+  letter-spacing:0.8px;
+  text-shadow:
+    0 0 6px rgba(125,211,252,.35),  /* subtle inner glow */
+    0 0 14px rgba(165,180,252,.25);/* soft cyber highlight */
+}
+
+
+/* Subtle corporate glow behind heading */
+.title::after{
+  content:"";
+  position:absolute;
+  inset:-30px;
+  background:
+    radial-gradient(circle at center,
+      rgba(95,179,255,.25),
+      rgba(159,168,255,.18),
+      transparent 70%);
+  filter:blur(42px);
+  z-index:-1;
+}
+
+/* THE SHIELD (only moving element) */
+.shield{
+  font-size:2.7rem;
+  display:inline-block;
+  animation: shieldFloat 3.8s ease-in-out infinite;
+  filter:
+    drop-shadow(0 0 10px rgba(95,179,255,.9))
+    drop-shadow(0 0 22px rgba(95,179,255,.4));
+}
+
+/* Gentle professional float */
+@keyframes shieldFloat{
+  0%,100%{ transform:translateY(0); }
+  50%{ transform:translateY(-9px); }
+}
+
+/* ================= TEXTAREA ================= */
+textarea{
+  width:100%;
+  min-height:170px;
+  padding:18px;
+  border-radius:18px;
+  background:#020617;
+  color:#e5e7eb;
+  border:1px solid rgba(148,163,184,.2);
+  font-size:1rem;
+  outline:none;
+}
+textarea:focus{
+  border-color:#38bdf8;
+  box-shadow:0 0 0 3px rgba(56,189,248,.35);
+}
+
+/* ================= SELECT ================= */
+select{
+  width:100%;
+  margin-top:10px;
+  padding:14px;
+  border-radius:14px;
+  background:#020617;
+  color:#e5e7eb;
+  border:1px solid rgba(148,163,184,.2);
+}
+
+/* ================= FILE BUTTON ================= */
+#fileInput{display:none}
+
+.custom-file-label{
+  display:block;
+  padding:16px 20px;
+  margin-top:14px;
+  background:linear-gradient(135deg,#38bdf8,#6366f1);
+  color:white;
+  font-size:1.15rem;
+  border-radius:14px;
+  cursor:pointer;
+  text-align:center;
+  width:100%;
+  border:none;
+  box-shadow:0 8px 24px rgba(56,189,248,.45);
+  transition:.25s;
+}
+.custom-file-label:hover{
+  transform:translateY(-2px) scale(1.02);
+  box-shadow:0 16px 40px rgba(99,102,241,.7);
+}
+.custom-file-label:active{
+  transform:scale(.96);
+}
+
+/* ================= BUTTONS ================= */
+.button-group{
+  display:flex;
+  gap:16px;
+  margin-top:20px;
+}
+.action-button{
+  flex:1;
+  padding:16px;
+  border-radius:18px;
+  border:none;
+  font-size:1rem;
+  font-weight:600;
+  cursor:pointer;
+  background:linear-gradient(135deg,#38bdf8,#6366f1);
+  color:white;
+  box-shadow:0 12px 30px rgba(56,189,248,.4);
+  transition:.25s;
+}
+.action-button:hover{
+  transform:translateY(-2px) scale(1.03);
+}
+.action-button:active{
+  transform:scale(.95);
+}
+
+/* ================= STATUS ================= */
+#status{
+  margin-top:24px;
+  padding:18px;
+  border-radius:18px;
+  text-align:center;
+  font-weight:600;
+}
+.safe{background:#064e3b;color:#6ee7b7}
+.warn{background:#78350f;color:#fde68a}
+.danger{background:#7f1d1d;color:#fca5a5}
+.unknown{background:#1e293b;color:#93c5fd}
+
+/* ================= OUTPUT ================= */
+#output{
+  margin-top:18px;
+  padding:16px;
+  border-radius:16px;
+  background:#020617;
+  border:1px solid rgba(148,163,184,.2);
+  font-family:monospace;
+  white-space:pre-wrap;
+  max-height:260px;
+  overflow:auto;
+}
+
+/* ================= SMART LOADER ================= */
+.smart-loader{
+  position:fixed;
+  inset:0;
+  background:rgba(15,23,42,.92);
+  backdrop-filter:blur(8px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+.hidden{display:none}
+.loader-glass{
+  background:linear-gradient(145deg,#1e293b,#0f172a);
+  border-radius:20px;
+  padding:30px;
+  width:92%;
+  max-width:380px;
+  box-shadow:0 30px 80px rgba(0,0,0,.6);
+  text-align:center;
+}
+.ai-ring{
+  width:70px;height:70px;
+  border-radius:50%;
+  border:4px solid rgba(56,189,248,.2);
+  border-top-color:#38bdf8;
+  animation:spin 1s linear infinite;
+  margin:0 auto 18px;
+}
+.scan-lines{display:flex;justify-content:center;gap:6px;margin:12px 0}
+.scan-lines span{
+  width:6px;height:18px;
+  background:#38bdf8;
+  border-radius:3px;
+  animation:pulse 1.2s infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
+.progress-track{
+  width:100%;height:10px;
+  background:#334155;
+  border-radius:8px;
+  overflow:hidden;
+  margin-top:14px;
+}
+.progress-fill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#38bdf8,#22d3ee);
+  transition:.4s;
+}
+.loader-text h3{
+  color:#e0f2fe;
+  margin-bottom:6px;
+}
+
 </style>
 </head>
+
 <body>
 
 <div class="container">
-  <h2>🛡 SafeNet — CYBER SCAM PREVENTION SYSTEM</h2>
-  
+  <h2 class="title">
+  <span class="shield">🛡</span>
+  <span class="title-text">SafeNet — CYBER SCAM PREVENTION SYSTEM</span>
+</h2>
+
+
+
   <textarea id="input" placeholder="Paste Your Message, Email, URL, or Link"></textarea>
 
   <label style="margin-top:10px;font-size:1.1rem;">🔍 Select Scan Type:</label>
-  <select id="scanType" style="
-    width:100%; padding:10px; margin-bottom:18px;
-    background:#1f293a; color:#c7d2fe;
-    border-radius:10px; border:none; font-size:1rem;">
-    <option value="auto" selected>📌 Auto Detect (Text/Image)</option>
+  <select id="scanType">
+    <option value="auto">📌 Auto Detect (Text/Image)</option>
     <option value="text">✉ Text / Email Only</option>
     <option value="url">🔗 URL Only</option>
     <option value="image">🖼 Image Only</option>
   </select>
 
-  <!-- Upload input section -->
-  <div id="uploadSection">
-    <input type="file" id="fileInput" accept="image/*,.txt,.eml,text/plain" />
-    <label for="fileInput" class="custom-file-label" tabindex="0">📁 Choose File</label>
-    <div class="button-group">
-      <button id="scanBtn" class="action-button">⚡ Scan Now</button>
-      <button id="previewBtn" class="action-button" style="background-color: #4f46e5;">👁 Preview File</button>
-    </div>
+  <input type="file" id="fileInput" accept="image/*,.txt,.eml,text/plain"/>
+  <label for="fileInput" class="custom-file-label">📁 Choose File</label>
+
+  <div class="button-group">
+    <button id="scanBtn" class="action-button">⚡ Scan Now</button>
+    <button id="previewBtn" class="action-button">👁 Preview File</button>
   </div>
 
-  <div id="status" aria-live="polite" role="alert">Waiting for input...</div>
+  <div id="status" class="unknown">Waiting for input...</div>
   <pre id="output"></pre>
 </div>
 
-<script>
-// --- Global Variables and Initialization ---
-let model = null;
-let selectedFile = null;
+<div id="smartLoader" class="smart-loader hidden">
+  <div class="loader-glass">
+    <div class="ai-ring"></div>
+    <div class="scan-lines"><span></span><span></span><span></span></div>
+    <div class="loader-text">
+      <h3 id="loaderMain">Loading</h3>
+      <p id="loaderSub">Please wait…</p>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="smartProgress"></div>
+    </div>
+  </div>
+</div>
+<script src="safe.js"></script>
+</body>
+</html>
 
-const fileInput = document.getElementById('fileInput');
-const scanType = document.getElementById('scanType');
-const statusEl = document.getElementById('status');
-const outputEl = document.getElementById('output');
-const inputEl = document.getElementById('input');
-const scanBtn = document.getElementById('scanBtn');
-const previewBtn = document.getElementById('previewBtn');
-const uploadSection = document.getElementById('uploadSection');
-const fileLabel = document.querySelector('label[for="fileInput"]');
-
-// Attempt to load the TensorFlow model on page load (for future ML integration)
-window.onload = async () => {
-  try {
-    // Note: 'model/model.json' is a placeholder. A real model file would be needed.
-    // model = await tf.loadLayersModel('model/model.json'); 
-    // console.log("TensorFlow model loaded successfully.");
-  } catch (e) {
-    // console.warn("TensorFlow model failed to load. Falling back to rule-based analysis.", e);
-    model = null;
-  }
-  updateUploadVisibility();
-};
-
-// --- Utility Functions ---
-
-/**
- * Escapes HTML special characters in a string.
- * @param {string} s - The string to escape.
- * @returns {string} The escaped string.
- */
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
-  }[c]));
-}
-
-/**
- * Updates the visibility of the file upload section based on the selected scan type.
- */
-function updateUploadVisibility() {
-  const mode = scanType.value;
-  // Only show upload section for 'image' or 'auto' mode
-  uploadSection.style.display = (mode === 'image' || mode === 'auto') ? 'block' : 'none';
-}
-
-// --- OCR and Preprocessing ---
-
-/**
- * Preprocesses an image file and performs OCR using Tesseract.js.
- * Includes basic image enhancements (scaling, grayscale, binarization) for better OCR results.
- * @param {File} file - The image file to process.
- * @param {function} progressCallback - Callback for Tesseract progress updates.
- * @returns {Promise<string>} The extracted text.
- */
-async function preprocessAndOCR(file, progressCallback) {
-  statusEl.textContent = 'Status: Loading image...';
-  const img = new Image();
-  const url = URL.createObjectURL(file);
-  img.src = url;
-
-  try {
-    await new Promise((resolve, reject) => {
-      img.onload = resolve;
-      img.onerror = () => reject('Image failed to load.');
-    });
-  } catch (e) {
-    URL.revokeObjectURL(url);
-    return '';
-  }
-
-  // Scale up small images for better OCR
-  const minWidth = 1000;
-  const scale = img.width < minWidth ? (minWidth / img.width) : 1;
-  const canvas = document.createElement('canvas');
-  canvas.width = Math.round(img.width * scale);
-  canvas.height = Math.round(img.height * scale);
-  const ctx = canvas.getContext('2d');
-  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-  // Simple Grayscale + Contrast adjustment
-  let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  let data = imgData.data;
-  for (let i = 0; i < data.length; i += 4) {
-    let gray = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
-    // Increase contrast slightly
-    gray = ((gray - 128) * 1.5) + 128;
-    gray = Math.max(0, Math.min(255, gray));
-    data[i] = data[i + 1] = data[i + 2] = gray;
-  }
-  ctx.putImageData(imgData, 0, 0);
-
-  // Binarization (converting to pure black and white)
-  imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  let sum = 0;
-  for (let i = 0; i < imgData.data.length; i += 4) sum += imgData.data[i];
-  // Calculate a dynamic threshold
-  const threshold = Math.max(120, Math.min(200, sum / (imgData.data.length / 4)));
-  for (let i = 0; i < imgData.data.length; i += 4) {
-    const bw = imgData.data[i] > threshold ? 255 : 0;
-    imgData.data[i] = imgData.data[i + 1] = imgData.data[i + 2] = bw;
-  }
-  ctx.putImageData(imgData, 0, 0);
-
-  // Perform OCR
-  const result = await Tesseract.recognize(canvas.toDataURL('image/png'), 'eng', {
-    logger: m => {
-      if (progressCallback) progressCallback(m);
-    }
-  });
-
-  URL.revokeObjectURL(url);
-  return result.data.text.trim();
-}
-
-// --- Scam Analysis Logic ---
-
-const TRIGGERS = [
-  "urgent", "immediately", "verify", "password", "bank", "otp", "transfer", 
-  "limited time", "account locked", "prize", "refund", "invoice", "verify now", 
-  "click here", "suspend", "unauthorized", "security alert", "winnings", "gift card",
-  "bitcoin", "cryptocurrency", "shipping fee", "tax payment", "court summons"
-];
-
-/**
- * Analyzes text content for potential scam indicators.
- * @param {string} text - The text to analyze.
- * @returns {{level: string, msg: string, score: number, findings: string[]}} Analysis result.
- */
-function analyzeText(text) {
-  const lower = text.toLowerCase();
-  let score = 0;
-  const findings = [];
-
-  // 1. URL Detection (High Score)
-  const urls = lower.match(/https?:\/\/[^\s'"]+/g);
-  if (urls) {
-    score += 12;
-    findings.push(`URL(s) detected: ${urls.length}`);
-    // Further check: look for common URL obfuscation/suspicious patterns
-    urls.forEach(url => {
-      if (url.includes('@') || url.includes('bit.ly') || url.includes('tinyurl')) {
-        score += 5;
-        findings.push(`Suspicious URL pattern in: ${url}`);
-      }
-    });
-  }
-
-  // 2. Email Detection (Medium Score)
-  if (lower.match(/[\w.+-]+@[\w.-]+\.\w+/g)) {
-    score += 8;
-    findings.push('Email address detected');
-  }
-
-  // 3. Trigger Word Analysis (Variable Score)
-  TRIGGERS.forEach(w => {
-    if (lower.includes(w)) {
-      score += 5;
-      findings.push(`Trigger: "${w}"`);
-    }
-  });
-
-  // 4. Call to Action (Medium Score)
-  if (lower.includes('reply to this email') || lower.includes('call this number')) {
-    score += 5;
-    findings.push('Strong Call to Action detected');
-  }
-
-  // 5. Urgency/Threat (High Score)
-  if (lower.includes('failure to comply') || lower.includes('will be terminated') || lower.includes('immediate action required')) {
-    score += 10;
-    findings.push('High Urgency/Threat language detected');
-  }
-
-  // Determine threat level
-  let level = 'safe',
-    msg = 'Low Threat — Message looks normal.';
-  if (score >= 35) {
-    level = 'danger';
-    msg = 'HIGH RISK — Likely a scam or phishing attempt.';
-  } else if (score >= 15) {
-    level = 'warn';
-    msg = ' Suspicious — Proceed with caution and verify before acting.';
-  } else if (text.length < 10) {
-    level = 'unknown';
-    msg = ' Not enough content for a reliable analysis.';
-  }
-
-  return {
-    level,
-    msg,
-    score,
-    findings
-  };
-}
-
-// --- Main Scan Function ---
-
-/**
- * Handles the entire scanning process based on input type and content.
- */
-async function runScan() {
-  statusEl.className = '';
-  statusEl.textContent = 'Status: Preparing scan...';
-  outputEl.textContent = '';
-  scanBtn.disabled = true;
-
-  let txt = inputEl.value.trim();
-  const mode = scanType.value;
-
-  // 1. Handle File Input (if applicable)
-  if ((mode === 'image' || mode === 'auto') && selectedFile) {
-    if (selectedFile.type.startsWith('image/')) {
-      // OCR for images
-      const ocr = await preprocessAndOCR(selectedFile, m => {
-        const pct = m.progress !== undefined ? Math.round(m.progress * 100) + '%' : '';
-        statusEl.textContent = `Status: OCR ${m.status || ''} ${pct}`;
-      });
-      txt = (txt + '\n' + ocr).trim();
-    } else if (selectedFile.type === 'text/plain' || selectedFile.name.endsWith('.txt') || selectedFile.name.endsWith('.eml')) {
-      // Read text files directly
-      statusEl.textContent = 'Status: Reading text file...';
-      const fileText = await selectedFile.text();
-      txt = (txt + '\n' + fileText).trim();
-    }
-  }
-
-  // 2. Check for minimum content
-  if (!txt || txt.length < 10) {
-    statusEl.className = 'unknown';
-    statusEl.textContent = 'Status: Not enough readable content for analysis.';
-    scanBtn.disabled = false;
-    return;
-  }
-
-  // 3. Perform Analysis
-  statusEl.textContent = 'Status: Analyzing content...';
-  const result = analyzeText(txt);
-
-  // 4. Display Results
-  statusEl.className = result.level;
-  statusEl.innerHTML = `${result.msg} <br><small>Score: ${result.score}</small>`;
-
-  let outputContent = '';
-  if (result.findings.length > 0) {
-    outputContent += '--- Analysis Findings ---\n' + result.findings.join('\n') + '\n\n';
-  }
-  outputContent += '--- Extracted / Input Text ---\n' + txt;
-  outputEl.textContent = outputContent;
-
-  scanBtn.disabled = false;
-}
-
-// --- Event Listeners ---
-
-// Update file selection status
-fileInput.addEventListener('change', e => {
-  selectedFile = e.target.files[0] || null;
-  fileLabel.textContent = selectedFile ?
-    `✅ File Selected: ${selectedFile.name}` :
-    '📁 Choose File';
-  statusEl.textContent = selectedFile ?
-    `Status: File "${selectedFile.name}" ready for scan.` :
-    'Status: Waiting for input...';
-  outputEl.textContent = '';
-});
-
-// Update upload visibility when scan type changes
-scanType.addEventListener('change', updateUploadVisibility);
-
-// Trigger scan on button click
-scanBtn.addEventListener('click', runScan);
-
-// Trigger scan on text input change (debounced for performance in a real app, but simple for this project)
-inputEl.addEventListener('input', () => {
-    // Clear previous status/output on new input
-    statusEl.className = '';
-    statusEl.textContent = 'Status: Ready to scan...';
-    outputEl.textContent = '';
-});
-
-// Preview button functionality
-previewBtn.addEventListener('click', async () => {
-  if (!selectedFile) return alert('Please select a file first.');
-
-  try {
-    if (selectedFile.type.startsWith('image/')) {
-      const url = URL.createObjectURL(selectedFile);
-      const w = window.open('');
-      w.document.write(`<img src="${url}" style="max-width:100%">`);
-    } else {
-      const text = await selectedFile.text();
-      const w = window.open('');
-      w.document.write(`<pre>${escapeHtml(text)}</pre>`);
-    }
-  } catch (error) {
-    alert('Could not preview file. Error: ' + error.message);
-  }
-});
-</script>
 </body>
 </html>
